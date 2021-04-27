@@ -1,0 +1,37 @@
+1618328890645	geckodriver	INFO	Listening on 127.0.0.1:62789
+1618328893693	mozrunner::runner	INFO	Running command: "C:\\Program Files\\Mozilla Firefox\\firefox.exe" "--marionette" "--headless" "-foreground" "-no-remote" "-profile" "C:\\Users\\grege\\AppData\\Local\\Temp\\rust_mozprofileARqhmX"
+*** You are running in headless mode.
+1618329130665	geckodriver	INFO	Listening on 127.0.0.1:58045
+1618329133705	mozrunner::runner	INFO	Running command: "C:\\Program Files\\Mozilla Firefox\\firefox.exe" "--marionette" "--headless" "-foreground" "-no-remote" "-profile" "C:\\Users\\grege\\AppData\\Local\\Temp\\rust_mozprofileZPU8wj"
+*** You are running in headless mode.
+console.warn: SearchSettings: "get: No settings file exists, new profile?" (new Error("", "(unknown module)"))
+1618329135907	Marionette	INFO	Listening on port 58053
+1618329136388	Marionette	WARN	TLS certificate errors will be ignored for this session
+console.log: WebExtensions: reset-default-search: No addons in our list are installed.
+1618330674183	geckodriver	INFO	Listening on 127.0.0.1:61303
+1618330677261	mozrunner::runner	INFO	Running command: "C:\\Program Files\\Mozilla Firefox\\firefox.exe" "--marionette" "--headless" "-foreground" "-no-remote" "-profile" "C:\\Users\\grege\\AppData\\Local\\Temp\\rust_mozprofiles5CuRr"
+*** You are running in headless mode.
+console.warn: SearchSettings: "get: No settings file exists, new profile?" (new Error("", "(unknown module)"))
+1618330679464	Marionette	INFO	Listening on port 61311
+1618330679929	Marionette	WARN	TLS certificate errors will be ignored for this session
+console.log: WebExtensions: reset-default-search: No addons in our list are installed.
+Exiting due to channel error.
+1618404103347	geckodriver	INFO	Listening on 127.0.0.1:64490
+1618404106439	mozrunner::runner	INFO	Running command: "C:\\Program Files\\Mozilla Firefox\\firefox.exe" "--marionette" "-foreground" "-no-remote" "-profile" "C:\\Users\\grege\\AppData\\Local\\Temp\\rust_mozprofileBFlRNd"
+console.warn: SearchSettings: "get: No settings file exists, new profile?" (new Error("", "(unknown module)"))
+1618404110532	Marionette	INFO	Listening on port 64498
+1618404110649	Marionette	WARN	TLS certificate errors will be ignored for this session
+console.log: WebExtensions: reset-default-search: No addons in our list are installed.
+
+###!!! [Child][RunMessage] Error: Channel closing: too late to send/recv, messages will be lost
+
+1618407028133	Marionette	INFO	Stopped listening on port 64498
+
+###!!! [Child][RunMessage] Error: Channel closing: too late to send/recv, messages will be lost
+
+zprofilecrfs6k"
+console.warn: SearchSettings: "get: No settings file exists, new profile?" (new Error("", "(unknown module)"))
+1618405318817	Marionette	INFO	Listening on port 63159
+1618405318998	Marionette	WARN	TLS certificate errors will be ignored for this session
+console.log: WebExtensions: reset-default-search: No addons in our list are installed.
+1618407025631	Marionette	INFO	Stopped listening on port 63159

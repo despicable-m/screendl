@@ -1,5 +1,11 @@
 from re import S
+import re
 from selenium import webdriver
+# from selenium.webdriver.chrome.options import Options
+
+# from selenium.webdriver.firefox.options import Options
+# from selenium.webdriver import Firefox
+
 from selenium.webdriver import ActionChains
 from selenium.webdriver.common.keys import Keys
 from selenium.webdriver.common.by import By
@@ -16,22 +22,28 @@ import json
 from moviedl.models import Movie
 
 # The Movie Data Base api key
-tmdb_API_KEY = 'TMDb API KEY GOES HERE'
+tmdb_API_KEY = '7b553e7407a39813fa954f7d4699b42a'
 
 # Chromedriver path
-PATH = "C:\Program Files (x86)\chromedriver.exe"
-driver = webdriver.Chrome(PATH)
+options = webdriver.ChromeOptions()
+options.add_argument("start-maximized");
+options.add_argument("disable-infobars")
+options.add_argument("--disable-extensions")
+PATH = r"C:\Program Files (x86)\chromedriver.exe"
+driver = webdriver.Chrome(chrome_options=options, executable_path=PATH)
+
 
 def scrape():
     """Scrapes websites"""
 
     # links to be scrapped go here
     sites = [
-        "http://103.91.144.230/ftpdata/Movies/Hollywood/2000_2005/",
-        "http://103.91.144.230/ftpdata/Movies/Hollywood/",
+        # "http://dl3.hymvz.shop/Movie/2021/",
+        # "http://dl3.hymvz.shop/Movie/2020/",
+        "http://dl3.ktupload.me/",
+        "http://103.222.20.150/ftpdata/Movies/Hollywood/2021/",
+        "http://103.91.144.230/ftpdata/Movies/Hollywood/2021/",
         "http://103.91.144.230/ftpdata/Movies/",
-        "https://my.dlactmovie.ir/animation/",
-        "https://my.dlactmovie.ir/film/",
         "http://103.222.20.150/ftpdata/Movies",
     ]
 
@@ -52,135 +64,141 @@ def scrape():
                 }
 
         while (True):
+            # try:
+            #     element = WebDriverWait(driver, 10).until(
+            #     EC.element_to_be_clickable((By.TAG_NAME, "a"))
+            # )
+            # finally:
+
+            if page_num < 0:
+                    break
+            else:
+                index_clicked = page_el['page'+str(page_num)]['index_clicked']
+                num_el = page_el['page'+str(page_num)]['num_el']
+
             try:
-                element = WebDriverWait(driver, 1000).until(
-                EC.element_to_be_clickable((By.TAG_NAME, "a"))
-            )
-            finally:
+                if '../' not in links[index_clicked].text and 'Parent Directory' not in links[index_clicked].text and 'Parent directory' not in links[index_clicked].text:
+                    
+                    # Clicks on directories to move to next page
+                    if links[index_clicked].get_attribute('href').endswith('/') and 'Parent directory' not in links[index_clicked].text:
+                        links[index_clicked].click()
+                        page_el['page'+str(page_num)]['num_el'] = page_el['page'+str(page_num)]['num_el'] - 1
 
-                if page_num < 0:
-                        break
-                else:
-                    index_clicked = page_el['page'+str(page_num)]['index_clicked']
-                    num_el = page_el['page'+str(page_num)]['num_el']
+                        #updates page number to next page
+                        page_num = page_num + 1
+                        links = driver.find_elements_by_tag_name('a')
 
-                try:
-                    if '../' not in links[index_clicked].text:
+                        # Adds next page data to page elements dictionary
+                        page_el['page'+str(page_num)] = {
+                            'num_el': len(links),
+                            'index_clicked': link_index
+                        }
+                    
+                    # determines whether the link has a video and copies url
+                    elif links[index_clicked].get_attribute('href').endswith(tuple(videos)):
+                        sort_data(links[index_clicked].get_attribute('href'))
+                        # page_el['page'+str(page_num)]['index_clicked'] = 0
+                        index_clicked = page_el['page'+str(page_num)]['index_clicked']
                         
-                        # Clicks on directories to move to next page
-                        if links[index_clicked].get_attribute('href').endswith('/'):
-                            page_el['page'+str(page_num)]['num_el'] = page_el['page'+str(page_num)]['num_el'] - 1
-                            links[index_clicked].click()
+                        # Returns number of directory left to be scanned.
+                        page_el['page'+str(page_num)]['num_el'] = page_el['page'+str(page_num)]['num_el'] - 1
+                        num_el = page_el['page'+str(page_num)]['num_el']
 
-                            #updates page number to next page
-                            page_num = page_num + 1
-                            links = driver.find_elements_by_tag_name('a')
-
-                            # Adds next page data to page elements dictionary
-                            page_el['page'+str(page_num)] = {
-                                'num_el': len(links),
-                                'index_clicked': link_index
-                            }
-                        
-                        # determines whether the link has a video and copies url
-                        elif links[index_clicked].get_attribute('href').endswith(tuple(videos)):
-                            sort_data(links[index_clicked].get_attribute('href'))
-                            page_el['page'+str(page_num)]['index_clicked'] = 0
-                            index_clicked = page_el['page'+str(page_num)]['index_clicked']
-                            
+                        if num_el < 1:
                             driver.back()
                             page_num = page_num - 1
 
-                            # Returns number of directory left to be scanned.
-                            page_el['page'+str(page_num)]['num_el'] = page_el['page'+str(page_num)]['num_el'] - 1
-                            links = driver.find_elements_by_tag_name('a')
+                        links = driver.find_elements_by_tag_name('a')
 
-                            while(True):
-                                # Updates the most recently clicked element on the page
-                                page_el['page'+str(page_num)]['index_clicked'] = page_el['page'+str(page_num)]['index_clicked'] + 1
-                                index_clicked = page_el['page'+str(page_num)]['index_clicked']
-                                num_el = page_el['page'+str(page_num)]['num_el']
-
-                                # Continues page if the current WebElement is not a video
-                                if not links[index_clicked].get_attribute('href').endswith(tuple(videos)):
-
-                                    # Clicks on WebElement to move to the next page if current WebElement is another directory.
-                                    if links[index_clicked].get_attribute('href').endswith('/'):
-                                        links[index_clicked].click()
-                                        page_el['page'+str(page_num)]['num_el'] = page_el['page'+str(page_num)]['num_el'] - 1
-                                        page_num = page_num + 1
-
-                                        page_el['page'+str(page_num)] = {
-                                            'num_el': len(links),
-                                            'index_clicked': link_index
-                                        }
-
-                                        links = driver.find_elements_by_tag_name('a')
-                                        index_clicked = page_el['page'+str(page_num)]['index_clicked']
-
-
-                                    if not page_el['page'+str(page_num)]['num_el'] <= 1:
-                                        if '../' not in links[index_clicked].text:
-                                            if links[index_clicked].get_attribute('href').endswith('/'):
-                                                links[index_clicked].click()
-                                                page_el['page'+str(page_num)]['num_el'] = page_el['page'+str(page_num)]['num_el'] - 1
-                                                links = driver.find_elements_by_tag_name('a')
-                                            elif links[index_clicked].get_attribute('href').endswith(tuple(videos)):
-                                                sort_data(links[index_clicked].get_attribute('href'))
-                                                driver.back()
-                                                page_el['page'+str(page_num)]['num_el'] = page_el['page'+str(page_num)]['num_el'] - 1
-                                                page_el['page'+str(page_num)]['index_clicked'] = page_el['page'+str(page_num)]['index_clicked'] + 1
-                                                links = driver.find_elements_by_tag_name('a')
-                                            else:
-                                                page_el['page'+str(page_num)]['index_clicked'] = page_el['page'+str(page_num)]['index_clicked'] + 1
-                                        else:
-                                            page_el['page'+str(page_num)]['num_el'] = page_el['page'+str(page_num)]['num_el'] - 1
-                                    else:
-                                        driver.back()
-                                        page_num = page_num - 1
-                                        links = driver.find_elements_by_tag_name('a')
-                                        break
-
-                                # Copies link and data if file is current WelbElement is a link to a video file.
-                                else:
-
-                                    # Copies and breaks the video scanning loop if all video files' link have been copied.
-                                    if num_el <= 1:
-                                        sort_data(links[index_clicked].get_attribute('href'))
-                                        driver.back()
-                                        page_num = page_num - 1
-                                        if page_num < 0:
-                                            break
-                                        else:
-                                            page_el['page'+str(page_num)]['index_clicked'] = page_el['page'+str(page_num)]['index_clicked'] + 1
-                                            links = driver.find_elements_by_tag_name('a')
-                                        break
-
-                                    # Copies video files' link
-                                    else:
-                                        sort_data(links[index_clicked].get_attribute('href'))
-                                        page_el['page'+str(page_num)]['num_el'] = page_el['page'+str(page_num)]['num_el'] - 1
-                                        num_el = page_el['page'+str(page_num)]['num_el']
-                                        if num_el < 1:
-                                            page_el['page'+str(page_num)]['index_clicked'] = 0
-                                            driver.back()
-                                            page_num = page_num - 1
-                                            page_el['page'+str(page_num)]['index_clicked'] = page_el['page'+str(page_num)]['index_clicked'] + 1
-                                            links = driver.find_elements_by_tag_name('a')
-                                        
-                        else:
+                        while(True):
+                            # Updates the most recently clicked element on the page
                             page_el['page'+str(page_num)]['index_clicked'] = page_el['page'+str(page_num)]['index_clicked'] + 1
+                            index_clicked = page_el['page'+str(page_num)]['index_clicked']
+                            num_el = page_el['page'+str(page_num)]['num_el']
+
+                            # Goes back or goes to the next page if the current WebElement is not a video
+                            if not links[index_clicked].get_attribute('href').endswith(tuple(videos)):
+
+                                # Clicks on WebElement to move to the next page if current WebElement is another directory.
+                                if links[index_clicked].get_attribute('href').endswith('/') and 'Parent directory' not in links[index_clicked].text:
+                                    links[index_clicked].click()
+                                    page_el['page'+str(page_num)]['num_el'] = page_el['page'+str(page_num)]['num_el'] - 1
+                                    page_num = page_num + 1
+
+                                    page_el['page'+str(page_num)] = {
+                                        'num_el': len(links),
+                                        'index_clicked': link_index
+                                    }
+
+                                    links = driver.find_elements_by_tag_name('a')
+                                    index_clicked = page_el['page'+str(page_num)]['index_clicked']
+
+
+                                if not page_el['page'+str(page_num)]['num_el'] < 1:
+                                    if '../' not in links[index_clicked].text and "Parent Directory" not in links[index_clicked].text and 'Parent directory' not in links[index_clicked].text:
+                                        if links[index_clicked].get_attribute('href').endswith('/') and 'Parent directory' not in links[index_clicked].text:
+                                            links[index_clicked].click()
+                                            page_el['page'+str(page_num)]['num_el'] = page_el['page'+str(page_num)]['num_el'] - 1
+                                            links = driver.find_elements_by_tag_name('a')
+                                        elif links[index_clicked].get_attribute('href').endswith(tuple(videos)):
+                                            sort_data(links[index_clicked].get_attribute('href'))
+                                            page_el['page'+str(page_num)]['num_el'] = page_el['page'+str(page_num)]['num_el'] - 1
+                                            if page_el['page'+str(page_num)]['num_el'] < 1:
+                                                driver.back()
+                                                page_num = page_num - 1
+                                            page_el['page'+str(page_num)]['index_clicked'] = page_el['page'+str(page_num)]['index_clicked'] + 1
+                                            links = driver.find_elements_by_tag_name('a')
+                                        else:
+                                            page_el['page'+str(page_num)]['index_clicked'] = page_el['page'+str(page_num)]['index_clicked'] + 1
+                                    else:
+                                        page_el['page'+str(page_num)]['num_el'] = page_el['page'+str(page_num)]['num_el'] - 1
+                                else:
+                                    driver.back()
+                                    page_num = page_num - 1
+                                    page_el['page'+str(page_num)]['index_clicked'] = page_el['page'+str(page_num)]['index_clicked'] + 1
+                                    links = driver.find_elements_by_tag_name('a')
+                                    break
+
+                            # Copies link and data if file is current WelbElement is a link to a video file.
+                            else:
+
+                                # Copies and breaks the video scanning loop if all video files' link have been copied.
+                                if num_el < 1:
+                                    sort_data(links[index_clicked].get_attribute('href'))
+                                    driver.back()
+                                    page_num = page_num - 1
+                                    if page_num < 0:
+                                        break
+                                    else:
+                                        page_el['page'+str(page_num)]['index_clicked'] = page_el['page'+str(page_num)]['index_clicked'] + 1
+                                        links = driver.find_elements_by_tag_name('a')
+                                    break
+
+                                # Copies video files' link
+                                else:
+                                    sort_data(links[index_clicked].get_attribute('href'))
+                                    page_el['page'+str(page_num)]['num_el'] = page_el['page'+str(page_num)]['num_el'] - 1
+                                    num_el = page_el['page'+str(page_num)]['num_el']
+                                    if num_el < 1:
+                                        page_el['page'+str(page_num)]['index_clicked'] = 0
+                                        driver.back()
+                                        page_num = page_num - 1
+                                        page_el['page'+str(page_num)]['index_clicked'] = page_el['page'+str(page_num)]['index_clicked'] + 1
+                                        links = driver.find_elements_by_tag_name('a')
+                                    
                     else:
                         page_el['page'+str(page_num)]['index_clicked'] = page_el['page'+str(page_num)]['index_clicked'] + 1
-                    
-                except(IndexError):
-                    driver.back()
-                    page_num = page_num - 1
-                    links = driver.find_elements_by_tag_name('a')
-                    if page_num < 0:
-                        break
-                    else:
-                        page_el['page'+str(page_num)]['index_clicked'] = page_el['page'+str(page_num)]['index_clicked'] + 1
+                else:
+                    page_el['page'+str(page_num)]['index_clicked'] = page_el['page'+str(page_num)]['index_clicked'] + 1
+                
+            except(IndexError):
+                driver.back()
+                page_num = page_num - 1
+                links = driver.find_elements_by_tag_name('a')
+                if page_num < 0:
+                    break
+                else:
+                    page_el['page'+str(page_num)]['index_clicked'] = page_el['page'+str(page_num)]['index_clicked'] + 1
     driver.close()
 
 
@@ -242,6 +260,10 @@ def get_movie_info(movie_name, movie_year):
     result = response.json()
 
     # Return received data from movie database
+    try:
+        print(f"MOVIE_INFO: {result['results'][0]['title']} - {result['results'][0]['release_date']}")
+    except KeyError:
+        print('no results')
     return result
 
 
@@ -268,16 +290,21 @@ def sort_data(data):
     size = response.headers.get('content-length', 0)
     default_movie_data["size_in_bytes"] = size
 
-    # Replaces all default movie data
-    for key, value in extracted_data.items():
-        if key in default_movie_data:
-            default_movie_data[key] = value
+    if "season" and "episode" not in extracted_data.keys():
+        # Replaces all default movie data
+        for key, value in extracted_data.items():
+            if key in default_movie_data:
+                default_movie_data[key] = value
 
-    # Gets movie info from a movie database
-    movie_detail = get_movie_info(default_movie_data["title"], default_movie_data["year"])
-    
-    
-    save_to_database(movie_detail['results'][0], default_movie_data)
+        # Gets movie info from a movie database
+        movie_detail = get_movie_info(default_movie_data["title"], default_movie_data["year"])
+        
+        try:
+            save_to_database(movie_detail['results'][0], default_movie_data)
+        except KeyError:
+            print("No results")
+    else:
+        print("Is seasonal")
 
 def save_to_database(data, file):
     """ Saves movie data to database """
@@ -366,7 +393,7 @@ def save_to_database(data, file):
             "movie_id":movie_info["movie_id"],
             "poster_path":movie_info["poster_path"]
         })     
-        data_to_save.save()   
+        data_to_save.save()  
 
 
 # Handles conversion of file size from bytes

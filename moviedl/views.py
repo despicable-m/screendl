@@ -1,5 +1,4 @@
 from os import environ
-import os
 from django.shortcuts import get_object_or_404, render
 from rest_framework import viewsets, generics, filters
 from rest_framework.response import Response
@@ -10,7 +9,7 @@ import requests
 from rest_framework.authtoken.models import Token
 
 
-tmdb_API_KEY = environ['tmdb_api_key']
+tmdb_API_KEY = environ['TMDB_API_KEY']
 
 
 def get_popular():

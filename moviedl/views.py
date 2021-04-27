@@ -45,10 +45,6 @@ def get_recommendation(tmdb_id):
 # Create your views here.
 class MovieViewSet(viewsets.ViewSet):
     def list(self, request):
-<<<<<<< HEAD
-        print(tm)
-=======
->>>>>>> f7a63a2b6b74e80cd112a8a7735cbfaffe3c0a07
 
         movies = Movie.objects.order_by('-id')[:10]
         serializer = MovieSerializer(movies, many=True)

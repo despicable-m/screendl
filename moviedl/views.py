@@ -9,7 +9,7 @@ import requests
 from rest_framework.authtoken.models import Token
 
 
-tmdb_API_KEY = environ['TMDB_API_KEY']
+tmdb_API_KEY = environ['tmdb_api_key']
 
 
 def get_popular():

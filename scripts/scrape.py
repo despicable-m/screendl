@@ -45,11 +45,15 @@ def scrape():
 
     # links to be scrapped go here
     sites = [
-        # "http://dl3.hymvz.shop/Movie/2021/",
-        # "http://dl3.hymvz.shop/Movie/2020/",
-        "http://dl3.ktupload.me/",
+        "http://dl3.hymvz.shop/Movie/2021/",
+        "http://dl3.hymvz.shop/Movie/2020/",
+        "http://dl3.hymvz.shop/Movie/2019/",
         "http://103.222.20.150/ftpdata/Movies/Hollywood/2021/",
         "http://103.91.144.230/ftpdata/Movies/Hollywood/2021/",
+        "http://103.222.20.150/ftpdata/Movies/Hollywood/2020/",
+        "http://103.91.144.230/ftpdata/Movies/Hollywood/2020/",
+        "http://103.222.20.150/ftpdata/Movies/Hollywood/2019/",
+        "http://103.91.144.230/ftpdata/Movies/Hollywood/2019/",
         "http://103.91.144.230/ftpdata/Movies/",
         "http://103.222.20.150/ftpdata/Movies",
     ]

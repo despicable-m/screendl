@@ -63,16 +63,17 @@ class MovieAPIView(generics.ListCreateAPIView):
     serializer_class = MovieSerializer
 
 
-class PopularView(generics.ListCreateAPIView):
-    movies = []
-    movie_list = get_popular()
-    for movie in movie_list:
-        m = Movie.objects.filter(movie_id=movie)
-        for i in m:
-            movies.append(i)
+class PopularView(APIView):
+    def get(self, request):
+        movies = []
+        movie_list = get_popular()
+        for movie in movie_list:
+            m = Movie.objects.filter(movie_id=movie)
+            for i in m:
+                movies.append(i)
 
-    queryset = movies
-    serializer_class = MovieSerializer
+        serializer = MovieSerializer(movies, many=True)
+        return Response(serializer.data)
 
 
 class RecommendView(APIView):

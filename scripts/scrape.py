@@ -45,6 +45,12 @@ def scrape():
 
     # links to be scrapped go here
     sites = [
+        "https://my.dlactmovie.ir/animation/2019/",
+        "https://my.dlactmovie.ir/animation/2020/"
+        "https://my.dlactmovie.ir/film/2021/",
+        "https://my.dlactmovie.ir/film/2020/",
+        "https://my.dlactmovie.ir/film/2019/",
+        "https://dl.mahanmovie.com/",
         "http://dl3.hymvz.shop/Movie/2021/",
         "http://dl3.hymvz.shop/Movie/2020/",
         "http://dl3.hymvz.shop/Movie/2019/",
@@ -54,8 +60,6 @@ def scrape():
         "http://103.91.144.230/ftpdata/Movies/Hollywood/2020/",
         "http://103.222.20.150/ftpdata/Movies/Hollywood/2019/",
         "http://103.91.144.230/ftpdata/Movies/Hollywood/2019/",
-        "http://103.91.144.230/ftpdata/Movies/",
-        "http://103.222.20.150/ftpdata/Movies",
     ]
 
     # Scrapes websites based on the number of 

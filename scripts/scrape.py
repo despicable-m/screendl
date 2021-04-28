@@ -18,6 +18,7 @@ import PTN
 import requests
 from typing import List, Union
 import json
+from os import environ
 
 from moviedl.models import Movie
 
@@ -26,10 +27,16 @@ tmdb_API_KEY = '7b553e7407a39813fa954f7d4699b42a'
 
 # Chromedriver path
 options = webdriver.ChromeOptions()
-options.add_argument("start-maximized");
-options.add_argument("disable-infobars")
-options.add_argument("--disable-extensions")
-PATH = r"C:\Program Files (x86)\chromedriver.exe"
+# options.add_argument("start-maximized")
+# options.add_argument("disable-infobars")
+# options.add_argument("--disable-extensions")
+options.add_argument("--headless")
+options.add_argument("--disable-gpu")
+options.add_argument("--no-sandbox")
+# PATH = r"C:\Program Files (x86)\chromedriver.exe"
+PATH = environ['CHROME_DRIVER_PATH']
+BINARY_PATH = environ['CHROME_BINARY_PATH']
+options.binary_location = BINARY_PATH
 driver = webdriver.Chrome(chrome_options=options, executable_path=PATH)
 
 

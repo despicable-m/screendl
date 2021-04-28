@@ -97,12 +97,13 @@ WSGI_APPLICATION = 'screendl.wsgi.application'
 
 DATABASES = {
     'default': {
+        'URI': "postgres://tsruxplniuzfmt:17325c4100e3af51a8edde31991516d1a0e046689290a39b5959823240b644c8@ec2-107-22-83-3.compute-1.amazonaws.com:5432/dcm6qh6fk6k3tv",
         'ENGINE': 'django.db.backends.postgresql_psycopg2',
-        'NAME': 'movie',
-        'USER': 'postgres',
-        'PASSWORD': '@Qwerty321',
-        'HOST': 'localhost',
-        'PORT': ''
+        'NAME': 'dcm6qh6fk6k3tv',
+        'USER': 'tsruxplniuzfmt',
+        'PASSWORD': '17325c4100e3af51a8edde31991516d1a0e046689290a39b5959823240b644c8',
+        'HOST': 'ec2-107-22-83-3.compute-1.amazonaws.com',
+        'PORT': '5432'
     }
 }
 

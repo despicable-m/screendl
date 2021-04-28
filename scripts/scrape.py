@@ -45,6 +45,7 @@ def scrape():
 
     # links to be scrapped go here
     sites = [
+        "http://dl3.sharefree.top/Movies/",
         "https://my.dlactmovie.ir/animation/2019/",
         "https://my.dlactmovie.ir/animation/2020/"
         "https://my.dlactmovie.ir/film/2021/",

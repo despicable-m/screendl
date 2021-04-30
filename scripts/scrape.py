@@ -45,13 +45,11 @@ def scrape():
 
     # links to be scrapped go here
     sites = [
-        "http://dl3.sharefree.top/Movies/",
-        "https://my.dlactmovie.ir/animation/2019/",
-        "https://my.dlactmovie.ir/animation/2020/"
-        "https://my.dlactmovie.ir/film/2021/",
-        "https://my.dlactmovie.ir/film/2020/",
-        "https://my.dlactmovie.ir/film/2019/",
-        "https://dl.mahanmovie.com/",
+        "http://162.12.215.254/Data/Movies/Hollywood/2021/",
+        "http://162.12.215.254/Data/Movies/Hollywood/2020/",
+        "http://162.12.215.254/Data/Movies/Hollywood/2019/"
+        "http://203.83.177.225/Data/Movies/Hollywood/2021/",
+        "http://203.83.177.225/Data/Movies/Hollywood/2019/",
         "http://dl3.hymvz.shop/Movie/2021/",
         "http://dl3.hymvz.shop/Movie/2020/",
         "http://dl3.hymvz.shop/Movie/2019/",

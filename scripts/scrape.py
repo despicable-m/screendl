@@ -45,6 +45,7 @@ def scrape():
 
     # links to be scrapped go here
     sites = [
+        "http://cf1.oyrbjdbfg.tk/E/Movie/2019/",
         "http://162.12.215.254/Data/Movies/Hollywood/2021/",
         "http://162.12.215.254/Data/Movies/Hollywood/2020/",
         "http://162.12.215.254/Data/Movies/Hollywood/2019/"
